@@ -15,7 +15,8 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(julia_pkg_management src/main.cpp)
+include_directories(include form)
+add_executable(julia_pkg_management src/main.cpp src/julia_pkg_management.cpp include/julia_pkg_management.h form/julia_pkg_management.ui)
 target_link_libraries(julia_pkg_management
         Qt::Core
         Qt::Gui

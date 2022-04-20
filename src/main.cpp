@@ -1,10 +1,10 @@
 #include <QApplication>
 #include <QPushButton>
+#include "../include/julia_pkg_management.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
+    JuliaPkgManagement app_julia_pkg_management;
+    app_julia_pkg_management.show();
     return QApplication::exec();
 }
