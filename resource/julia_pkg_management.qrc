@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="pkg">
+    <file>pkg_management.svg</file>
+  </qresource>
+</RCC>
