@@ -2,6 +2,7 @@
 #define JULIA_PKG_MANAGEMENT_JULIA_PKG_MANAGEMENT_H
 
 #include <QWidget>
+#include <QDesktopServices>
 #include "../../form/ui_julia_pkg_management.h"
 
 
@@ -19,6 +20,12 @@ public:
 
 private:
     Ui::JuliaPkgManagement *ui;
+
+    void initUI();
+    void setConnectionsBetweenSignalsAndSlots();
+
+private slots:
+
 };
 
 
