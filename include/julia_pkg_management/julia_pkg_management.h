@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QDesktopServices>
+#include <QMessageBox>
+#include <QFileDialog>
 #include "../../form/ui_julia_pkg_management.h"
 
 
@@ -19,13 +21,16 @@ public:
     ~JuliaPkgManagement() override;
 
 private:
-    Ui::JuliaPkgManagement *ui;
+    Ui::JuliaPkgManagement *ui_;
+
+    QString julia_path_;
 
     void initUI();
     void setConnectionsBetweenSignalsAndSlots();
 
 private slots:
-
+    void checkJuliaEnvAuto();
+    void loadJuliaPath();
 };
 
 
