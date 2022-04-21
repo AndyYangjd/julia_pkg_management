@@ -90,7 +90,7 @@ public:
         label_julia->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         label_julia->setWordWrap(true);
         label_julia->setOpenExternalLinks(true);
-        label_julia->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        label_julia->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
         horizontalLayout_2->addWidget(label_julia);
 

@@ -2,6 +2,12 @@
 #define JULIA_PKG_MANAGEMENT_JULIA_PKG_MANAGEMENT_H
 
 #include <QWidget>
+#include <QDesktopServices>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QProcess>
+#include <QErrorMessage>
+#include <QStandardItemModel>
 #include "../../form/ui_julia_pkg_management.h"
 
 
@@ -18,7 +24,23 @@ public:
     ~JuliaPkgManagement() override;
 
 private:
-    Ui::JuliaPkgManagement *ui;
+    Ui::JuliaPkgManagement *ui_;
+
+    QString julia_path_{};
+    QProcess proc_;
+    QStringList args_;
+    QStandardItemModel* pkg_manage_model_;
+
+
+    void initUI();
+    void setConnectionsBetweenSignalsAndSlots();
+
+    void checkJuliaStr();
+
+private slots:
+    void checkJuliaEnvAuto();
+    void loadJuliaPath();
+    void editLineFinished();
 };
 
 
