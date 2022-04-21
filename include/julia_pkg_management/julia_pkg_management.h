@@ -5,6 +5,8 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QProcess>
+#include <QErrorMessage>
 #include "../../form/ui_julia_pkg_management.h"
 
 
@@ -23,14 +25,20 @@ public:
 private:
     Ui::JuliaPkgManagement *ui_;
 
-    QString julia_path_;
+    QString julia_path_{};
+    QProcess proc_;
+    QStringList args_;
+
 
     void initUI();
     void setConnectionsBetweenSignalsAndSlots();
 
+    void checkJuliaStr();
+
 private slots:
     void checkJuliaEnvAuto();
     void loadJuliaPath();
+    void editLineFinished();
 };
 
 
