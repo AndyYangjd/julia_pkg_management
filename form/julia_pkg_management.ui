@@ -26,8 +26,8 @@
    <string>Pkg Management for Julia</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../resource/pkg_management.svg</normaloff>../resource/pkg_management.svg</iconset>
+   <iconset resource="../resource/julia_pkg_management.qrc">
+    <normaloff>:/pkg/pkg_management.PNG</normaloff>:/pkg/pkg_management.PNG</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -35,7 +35,7 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,0,1,0,0,10">
+  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,0,0,1,0,0,0,10">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3,0,0,0,0">
      <item>
@@ -43,7 +43,11 @@
        <property name="font">
         <font>
          <pointsize>15</pointsize>
+         <underline>false</underline>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>click this will open the webset of julia</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -90,6 +94,9 @@
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="toolTip">
+          <string>Install julia with jill(A third package of pip)</string>
+         </property>
          <property name="text">
           <string>One-Click to Install</string>
          </property>
@@ -101,6 +108,9 @@
           <font>
            <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="toolTip">
+          <string>Auto check the environment of julia.exe</string>
          </property>
          <property name="text">
           <string>Auto Check(Recommend)</string>
@@ -129,7 +139,11 @@
          <property name="font">
           <font>
            <pointsize>10</pointsize>
+           <underline>true</underline>
           </font>
+         </property>
+         <property name="toolTip">
+          <string>The webset of julia packages</string>
          </property>
          <property name="text">
           <string>Julia-Hub</string>
@@ -147,6 +161,7 @@
          <property name="font">
           <font>
            <pointsize>10</pointsize>
+           <underline>true</underline>
           </font>
          </property>
          <property name="frameShadow">
@@ -168,6 +183,7 @@
          <property name="font">
           <font>
            <pointsize>10</pointsize>
+           <underline>true</underline>
           </font>
          </property>
          <property name="text">
@@ -184,6 +200,13 @@
       </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -225,14 +248,39 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_load">
+      <widget class="QToolButton" name="btn_load">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
         </font>
        </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Please select the path of julia.exe</string>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>Load</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resource/julia_pkg_management.qrc">
+         <normaloff>:/pkg/upload.svg</normaloff>:/pkg/upload.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonIconOnly</enum>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -252,9 +300,16 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,1,50">
      <item>
-      <widget class="QPushButton" name="btn_add">
+      <widget class="QToolButton" name="btn_add">
        <property name="minimumSize">
         <size>
          <width>50</width>
@@ -272,13 +327,23 @@
          <pointsize>10</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Install Package</string>
+       </property>
        <property name="text">
-        <string>Add</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resource/julia_pkg_management.qrc">
+         <normaloff>:/pkg/install.svg</normaloff>:/pkg/install.svg</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_uninstall">
+      <widget class="QToolButton" name="btn_uninstall">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -302,13 +367,23 @@
          <pointsize>10</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Delete the Selected Package</string>
+       </property>
        <property name="text">
-        <string>Uninstall</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resource/julia_pkg_management.qrc">
+         <normaloff>:/pkg/delete.svg</normaloff>:/pkg/delete.svg</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_upgrade">
+      <widget class="QToolButton" name="btn_upgrade">
        <property name="minimumSize">
         <size>
          <width>50</width>
@@ -326,13 +401,23 @@
          <pointsize>10</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Upgrade the Selected Package</string>
+       </property>
        <property name="text">
-        <string>Upgrade</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resource/julia_pkg_management.qrc">
+         <normaloff>:/pkg/update_one.svg</normaloff>:/pkg/update_one.svg</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_upgrade_all">
+      <widget class="QToolButton" name="btn_upgrade_all">
        <property name="minimumSize">
         <size>
          <width>50</width>
@@ -350,8 +435,18 @@
          <pointsize>10</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Upgrade All Packages</string>
+       </property>
        <property name="text">
-        <string>Upgrade All</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resource/julia_pkg_management.qrc">
+         <normaloff>:/pkg/update_all.svg</normaloff>:/pkg/update_all.svg</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -390,7 +485,7 @@
         <x>0</x>
         <y>0</y>
         <width>832</width>
-        <height>614</height>
+        <height>605</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
