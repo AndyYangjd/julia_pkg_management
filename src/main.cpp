@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QPushButton>
-#include "../include/julia_pkg_management.h"
+#include "julia_pkg_management/julia_pkg_management.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);

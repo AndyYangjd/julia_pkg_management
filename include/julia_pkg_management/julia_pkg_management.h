@@ -2,7 +2,7 @@
 #define JULIA_PKG_MANAGEMENT_JULIA_PKG_MANAGEMENT_H
 
 #include <QWidget>
-#include "../form/ui_julia_pkg_management.h"
+#include "../../form/ui_julia_pkg_management.h"
 
 
 QT_BEGIN_NAMESPACE
