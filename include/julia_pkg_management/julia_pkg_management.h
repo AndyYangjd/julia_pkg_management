@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QProcess>
 #include <QErrorMessage>
+#include <QStandardItemModel>
 #include "../../form/ui_julia_pkg_management.h"
 
 
@@ -28,6 +29,7 @@ private:
     QString julia_path_{};
     QProcess proc_;
     QStringList args_;
+    QStandardItemModel* pkg_manage_model_;
 
 
     void initUI();

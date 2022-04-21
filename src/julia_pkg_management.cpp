@@ -16,14 +16,25 @@ JuliaPkgManagement::JuliaPkgManagement(QWidget *parent) :
 
 JuliaPkgManagement::~JuliaPkgManagement() {
     delete ui_;
+    delete pkg_manage_model_;
 }
 
 void JuliaPkgManagement::initUI() {
+    // define the external link of label
     // ui->label_julia->setText("<a href=https://julialang.org>Julia a High Performance and Dynamically Typed Language.");
     ui_->label_julia_hub->setText("<a style='color: green;' href=https://juliahub.com/ui/Home>JuliaHub");
     ui_->label_julia_com_en->setText(
             "<a style='color: black;' href=https://discourse.julialang.org>Julia-Community-EN");
     ui_->label_julia_com_cn->setText("<a style='color: black;' href=https://discourse.juliacn.com>Julia-Community-CN");
+
+    // define the tableModel
+    pkg_manage_model_ =new QStandardItemModel(30, 3, this);
+    pkg_manage_model_->setHeaderData(0, Qt::Horizontal, tr("Package Name"));
+    pkg_manage_model_->setHeaderData(1, Qt::Horizontal, tr("Current Version"));
+    pkg_manage_model_->setHeaderData(2, Qt::Horizontal, tr("Latest Version"));
+
+    ui_->tableView_pkg->setModel(pkg_manage_model_);
+    ui_->tableView_pkg->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
