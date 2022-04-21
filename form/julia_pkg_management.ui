@@ -23,14 +23,17 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Pkg Management for Julia</string>
+   <string>  Pkg Management for Julia</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resource/julia_pkg_management.qrc">
-    <normaloff>:/pkg/pkg_management.PNG</normaloff>:/pkg/pkg_management.PNG</iconset>
+    <normaloff>:/image/image/pkg_management.PNG</normaloff>:/image/image/pkg_management.PNG</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -268,7 +271,7 @@
        </property>
        <property name="icon">
         <iconset resource="../resource/julia_pkg_management.qrc">
-         <normaloff>:/pkg/upload.svg</normaloff>:/pkg/upload.svg</iconset>
+         <normaloff>:/image/image/upload.png</normaloff>:/image/image/upload.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -335,7 +338,7 @@
        </property>
        <property name="icon">
         <iconset resource="../resource/julia_pkg_management.qrc">
-         <normaloff>:/pkg/install.svg</normaloff>:/pkg/install.svg</iconset>
+         <normaloff>:/image/image/install.png</normaloff>:/image/image/install.png</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -375,7 +378,7 @@
        </property>
        <property name="icon">
         <iconset resource="../resource/julia_pkg_management.qrc">
-         <normaloff>:/pkg/delete.svg</normaloff>:/pkg/delete.svg</iconset>
+         <normaloff>:/image/image/delete.png</normaloff>:/image/image/delete.png</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -409,7 +412,7 @@
        </property>
        <property name="icon">
         <iconset resource="../resource/julia_pkg_management.qrc">
-         <normaloff>:/pkg/update_one.svg</normaloff>:/pkg/update_one.svg</iconset>
+         <normaloff>:/image/image/update_one.png</normaloff>:/image/image/update_one.png</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -443,7 +446,7 @@
        </property>
        <property name="icon">
         <iconset resource="../resource/julia_pkg_management.qrc">
-         <normaloff>:/pkg/update_all.svg</normaloff>:/pkg/update_all.svg</iconset>
+         <normaloff>:/image/image/upload.png</normaloff>:/image/image/upload.png</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>

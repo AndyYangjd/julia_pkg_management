@@ -1,10 +1,10 @@
 <RCC>
-  <qresource prefix="pkg">
-    <file>pkg_management.PNG</file>
-    <file>upload.svg</file>
-    <file>delete.svg</file>
-    <file>install.svg</file>
-    <file>update_all.svg</file>
-    <file>update_one.svg</file>
+  <qresource prefix="image">
+    <file>image/pkg_management.PNG</file>
+    <file>image/upload.png</file>
+    <file>image/delete.png</file>
+    <file>image/install.png</file>
+    <file>image/update_all.png</file>
+    <file>image/update_one.png</file>
   </qresource>
 </RCC>

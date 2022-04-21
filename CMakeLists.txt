@@ -9,6 +9,10 @@ set(CMAKE_AUTOUIC ON)
 set(QTVersion 6)
 set(CMAKE_PREFIX_PATH "D:/Qt/6.2.4/msvc2019_64")
 
+set(QRC_SOURCE_FILES resource/julia_pkg_management.qrc)
+# qt6_add_resources(QRC_FILES ${QRC_SOURCE_FILES})
+SOURCE_GROUP("Resource Files" FILES ${QRC_SOURCE_FILES})
+
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -16,7 +20,7 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 include_directories(include form)
-add_executable(julia_pkg_management src/main.cpp src/julia_pkg_management.cpp include/julia_pkg_management/julia_pkg_management.h form/julia_pkg_management.ui)
+add_executable(julia_pkg_management src/main.cpp ${QRC_SOURCE_FILES} src/julia_pkg_management.cpp include/julia_pkg_management/julia_pkg_management.h form/julia_pkg_management.ui)
 target_link_libraries(julia_pkg_management
         Qt::Core
         Qt::Gui
