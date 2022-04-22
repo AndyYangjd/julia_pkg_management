@@ -3,11 +3,14 @@
 
 #include <QWidget>
 #include <QDesktopServices>
+#include <QUrl>
+#include <QDir>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QProcess>
 #include <QErrorMessage>
 #include <QStandardItemModel>
+#include <QMap>
 #include "../../form/ui_julia_pkg_management.h"
 
 
@@ -24,6 +27,7 @@ public:
     ~JuliaPkgManagement() override;
 
 private:
+    enum VERSION_TYPE{current=0, latest=1};
     Ui::JuliaPkgManagement *ui_;
 
     QString julia_path_{};
@@ -31,16 +35,27 @@ private:
     QStringList args_;
     QStandardItemModel* pkg_manage_model_;
 
+    QString scan_pkg_path_{};
+    unsigned int num_pkg_{0};
+    QMap<QString, QString> cur_pkg_name_version_{};
+    QMap<QString, QString> latest_pkg_name_version_{};
 
     void initUI();
     void setConnectionsBetweenSignalsAndSlots();
 
     void checkJuliaStr();
 
+    void getScriptsPath();
+    void scanCurrentPkg();
+    void processPkgInfo(QString&);
+    void clearTableData();
+    void updateTableModel(const QMap<QString, QString>&, VERSION_TYPE);
+
 private slots:
     void checkJuliaEnvAuto();
     void loadJuliaPath();
     void editLineFinished();
+    void installJulia();
 };
 
 

@@ -262,7 +262,9 @@ public:
         btn_upgrade_all->setMinimumSize(QSize(50, 0));
         btn_upgrade_all->setMaximumSize(QSize(50, 16777215));
         btn_upgrade_all->setFont(font3);
-        btn_upgrade_all->setIcon(icon1);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/image/image/update_all.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_upgrade_all->setIcon(icon5);
         btn_upgrade_all->setAutoRaise(true);
 
         horizontalLayout_3->addWidget(btn_upgrade_all);

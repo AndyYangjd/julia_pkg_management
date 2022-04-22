@@ -12,11 +12,18 @@ JuliaPkgManagement::JuliaPkgManagement(QWidget *parent) :
     ui_->setupUi(this);
     this->initUI();
     this->setConnectionsBetweenSignalsAndSlots();
+    this->getScriptsPath();
 }
 
 JuliaPkgManagement::~JuliaPkgManagement() {
     delete ui_;
     delete pkg_manage_model_;
+}
+
+void JuliaPkgManagement::clearTableData() {
+    pkg_manage_model_->clear();
+    pkg_manage_model_->setHorizontalHeaderLabels(
+            QStringList() << "Package Name" << "Current Version" << "Latest Version");
 }
 
 void JuliaPkgManagement::initUI() {
@@ -28,7 +35,7 @@ void JuliaPkgManagement::initUI() {
     ui_->label_julia_com_cn->setText("<a style='color: black;' href=https://discourse.juliacn.com>Julia-Community-CN");
 
     // define the tableModel
-    pkg_manage_model_ =new QStandardItemModel(30, 3, this);
+    pkg_manage_model_ = new QStandardItemModel(30, 3, this);
     pkg_manage_model_->setHeaderData(0, Qt::Horizontal, tr("Package Name"));
     pkg_manage_model_->setHeaderData(1, Qt::Horizontal, tr("Current Version"));
     pkg_manage_model_->setHeaderData(2, Qt::Horizontal, tr("Latest Version"));
@@ -38,9 +45,121 @@ void JuliaPkgManagement::initUI() {
 }
 
 void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
+    connect(ui_->btn_one_click, SIGNAL(clicked()), this, SLOT(installJulia()));
     connect(ui_->btn_auto_check, SIGNAL(clicked()), this, SLOT(checkJuliaEnvAuto()));
     connect(ui_->btn_load, SIGNAL(clicked()), this, SLOT(loadJuliaPath()));
     connect(ui_->lineEdit_executor, SIGNAL(returnPressed()), this, SLOT(editLineFinished()));
+}
+
+void JuliaPkgManagement::updateTableModel(const QMap<QString, QString> &_map, VERSION_TYPE _type) {
+    this->clearTableData();
+
+    int i_row = 0;
+    for (const auto &item_pkg_version: _map.toStdMap()) {
+        auto *pkg_name = new QStandardItem(item_pkg_version.first);
+        pkg_manage_model_->setItem(i_row, 0, pkg_name);
+        // pkg_manage_model_->item(i_row, 0)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+        auto *pkg_version = new QStandardItem(item_pkg_version.second);
+        pkg_manage_model_->setItem(i_row, 1, pkg_version);
+        pkg_manage_model_->item(i_row, 1)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+        i_row++;
+    }
+
+    this->num_pkg_ = i_row;
+}
+
+void JuliaPkgManagement::processPkgInfo(QString &_info) {
+    auto str_len = _info.length();
+    QStringList cur_pkg_info_list{};
+    QString cur_pkg_info{};
+    while (str_len > 0) {
+        auto start = _info.indexOf("]");
+        _info = _info.mid(start + 2);
+        _info = _info.simplified();
+        auto end = _info.indexOf("[");
+
+        if (end > 0) {
+            cur_pkg_info = _info.mid(0, end);
+            cur_pkg_info = cur_pkg_info.simplified();
+
+            cur_pkg_info_list = cur_pkg_info.split(" ");
+            // qDebug() << cur_pkg_info_list;
+            if (cur_pkg_info_list.length() == 2) {
+                cur_pkg_name_version_.insert(cur_pkg_info_list.at(0), cur_pkg_info_list.at(1).mid(1));
+            } else {
+                cur_pkg_name_version_.insert(cur_pkg_info_list.at(0), "");
+            }
+
+            _info = _info.mid(end + 1);
+            str_len = _info.length();
+        } else {// walk to the end of last package
+            cur_pkg_info_list = _info.split(" ");
+            // qDebug() << cur_pkg_info_list;
+            if (cur_pkg_info_list.length() == 2) {
+                cur_pkg_name_version_.insert(cur_pkg_info_list.at(0), cur_pkg_info_list.at(1).mid(1));
+            } else {
+                cur_pkg_name_version_.insert(cur_pkg_info_list.at(0), "");
+            }
+
+            break;
+        }
+    }
+    // qDebug() << pkg_name_version_;
+    this->updateTableModel(cur_pkg_name_version_, VERSION_TYPE::current);
+}
+
+void JuliaPkgManagement::scanCurrentPkg() {
+    args_.clear();
+    args_ << scan_pkg_path_ << "--cur";
+    proc_.start("julia", args_);
+
+    if (!proc_.waitForStarted()) {
+        auto error_scan_julia = new QErrorMessage(this);
+        error_scan_julia->setWindowTitle("QProcess Exec Error");
+        error_scan_julia->showMessage("Can't run: julia scan_pkg.jl --cur");
+    }
+    proc_.waitForFinished();
+    QString tmp = QString::fromLocal8Bit(proc_.readAllStandardOutput());
+
+    tmp = tmp.simplified();
+    this->processPkgInfo(tmp);
+    // qDebug() << tmp;
+}
+
+void JuliaPkgManagement::getScriptsPath() {
+    QString cur_file_path = QDir::currentPath();
+    QString cur_parent_path = cur_file_path.mid(0, cur_file_path.lastIndexOf("/"));
+    scan_pkg_path_ = cur_parent_path.append("/").append("scripts/").append("scan_pkg.jl");
+    scan_pkg_path_.replace("/", "\\");
+    if (scan_pkg_path_.isEmpty()) {
+        auto error_scan_julia = new QErrorMessage(this);
+        error_scan_julia->setWindowTitle("Fatal Error");
+        error_scan_julia->showMessage("Can't get the path of scan_pkg.jl!");
+
+        return;
+    }
+}
+
+void JuliaPkgManagement::installJulia() {
+    QDesktopServices::openUrl(QUrl(QString("https://cn.julialang.org/downloads/")));
+    /*
+    args_.clear();
+    args_ << "-o" << "C:\\Users\\%username%\\Downloads\\julia-1.7.2-win64.exe"
+          << QString("https://mirrors.sjtug.sjtu.edu.cn/julia-releases/bin/winnt/x64/1.7/julia-1.7.2-win64.exe");
+    qDebug() << args_;
+    proc_.start("curl", args_);
+    if (!proc_.waitForStarted()) {
+        auto error_curl_julia = new QErrorMessage(this);
+        error_curl_julia->setWindowTitle("Error");
+        error_curl_julia->showMessage("Can't use curl to download julia-1.7.2-win64.exe! Please install manually.");
+    }
+    proc_.waitForFinished();
+    QString tmp = QString::fromLocal8Bit(proc_.readAllStandardOutput());
+    qDebug() << tmp;
+    qDebug() << "end";
+    */
 }
 
 void JuliaPkgManagement::checkJuliaStr() {
@@ -50,6 +169,10 @@ void JuliaPkgManagement::checkJuliaStr() {
         QString tmp = tmp_list.back();
         if (tmp == "julia.exe") {
             ui_->lineEdit_executor->setText(julia_path_);
+
+            // scan the packages
+            this->scanCurrentPkg();
+
         } else {
             QMessageBox box;
             box.setText("The name of executor isn't julia.exe!");

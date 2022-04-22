@@ -446,7 +446,7 @@
        </property>
        <property name="icon">
         <iconset resource="../resource/julia_pkg_management.qrc">
-         <normaloff>:/image/image/upload.png</normaloff>:/image/image/upload.png</iconset>
+         <normaloff>:/image/image/update_all.png</normaloff>:/image/image/update_all.png</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
