@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDesktopServices>
+#include <QUrl>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QProcess>
@@ -41,6 +42,8 @@ private slots:
     void checkJuliaEnvAuto();
     void loadJuliaPath();
     void editLineFinished();
+
+    void installJulia();
 };
 
 

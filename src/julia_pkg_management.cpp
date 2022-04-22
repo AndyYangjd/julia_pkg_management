@@ -28,7 +28,7 @@ void JuliaPkgManagement::initUI() {
     ui_->label_julia_com_cn->setText("<a style='color: black;' href=https://discourse.juliacn.com>Julia-Community-CN");
 
     // define the tableModel
-    pkg_manage_model_ =new QStandardItemModel(30, 3, this);
+    pkg_manage_model_ = new QStandardItemModel(30, 3, this);
     pkg_manage_model_->setHeaderData(0, Qt::Horizontal, tr("Package Name"));
     pkg_manage_model_->setHeaderData(1, Qt::Horizontal, tr("Current Version"));
     pkg_manage_model_->setHeaderData(2, Qt::Horizontal, tr("Latest Version"));
@@ -38,9 +38,30 @@ void JuliaPkgManagement::initUI() {
 }
 
 void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
+    connect(ui_->btn_one_click, SIGNAL(clicked()), this, SLOT(installJulia()));
     connect(ui_->btn_auto_check, SIGNAL(clicked()), this, SLOT(checkJuliaEnvAuto()));
     connect(ui_->btn_load, SIGNAL(clicked()), this, SLOT(loadJuliaPath()));
     connect(ui_->lineEdit_executor, SIGNAL(returnPressed()), this, SLOT(editLineFinished()));
+}
+
+void JuliaPkgManagement::installJulia() {
+    QDesktopServices::openUrl(QUrl(QString("https://cn.julialang.org/downloads/")));
+    /*
+    args_.clear();
+    args_ << "-o" << "C:\\Users\\%username%\\Downloads\\julia-1.7.2-win64.exe"
+          << QString("https://mirrors.sjtug.sjtu.edu.cn/julia-releases/bin/winnt/x64/1.7/julia-1.7.2-win64.exe");
+    qDebug() << args_;
+    proc_.start("curl", args_);
+    if (!proc_.waitForStarted()) {
+        auto error_curl_julia = new QErrorMessage(this);
+        error_curl_julia->setWindowTitle("Error");
+        error_curl_julia->showMessage("Can't use curl to download julia-1.7.2-win64.exe! Please install manually.");
+    }
+    proc_.waitForFinished();
+    QString tmp = QString::fromLocal8Bit(proc_.readAllStandardOutput());
+    qDebug() << tmp;
+    qDebug() << "end";
+    */
 }
 
 void JuliaPkgManagement::checkJuliaStr() {
