@@ -12,6 +12,7 @@ JuliaPkgManagement::JuliaPkgManagement(QWidget *parent) :
     ui_->setupUi(this);
     this->initUI();
     this->setConnectionsBetweenSignalsAndSlots();
+    this->getScriptsPath();
 }
 
 JuliaPkgManagement::~JuliaPkgManagement() {
@@ -42,6 +43,17 @@ void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
     connect(ui_->btn_auto_check, SIGNAL(clicked()), this, SLOT(checkJuliaEnvAuto()));
     connect(ui_->btn_load, SIGNAL(clicked()), this, SLOT(loadJuliaPath()));
     connect(ui_->lineEdit_executor, SIGNAL(returnPressed()), this, SLOT(editLineFinished()));
+}
+
+void JuliaPkgManagement::getScriptsPath() {
+    QString cur_file_path = QDir::currentPath();
+    QString cur_parent_path = cur_file_path.mid(0, cur_file_path.lastIndexOf("/"));
+    scan_pkg_path_ = cur_parent_path.append("/").append("scripts/").append("scan_pkg.jl");
+    scan_pkg_path_.replace("/", "\\");
+    qDebug() << scan_pkg_path_;
+
+    // QStringList list_tmp = cur_file_path.split()
+
 }
 
 void JuliaPkgManagement::installJulia() {

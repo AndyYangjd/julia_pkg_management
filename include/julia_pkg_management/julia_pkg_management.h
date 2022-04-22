@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QDir>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QProcess>
@@ -32,6 +33,7 @@ private:
     QStringList args_;
     QStandardItemModel* pkg_manage_model_;
 
+    QString scan_pkg_path_{};
 
     void initUI();
     void setConnectionsBetweenSignalsAndSlots();
@@ -44,6 +46,8 @@ private slots:
     void editLineFinished();
 
     void installJulia();
+
+    void getScriptsPath();
 };
 
 
