@@ -53,8 +53,35 @@ void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
     connect(ui_->lineEdit_executor, SIGNAL(returnPressed()), this, SLOT(editLineFinished()));
 
     connect(ui_->btn_uninstall, SIGNAL(clicked(bool)), this, SLOT(rmSelectedPkg()));
+    connect(ui_->btn_upgrade, SIGNAL(clicked(bool)), this, SLOT(upSelectedPkg()));
     connect(ui_->btn_upgrade_all, SIGNAL(clicked()), this, SLOT(updatePkgAll()));
     connect(ui_->tableView_pkg, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getSelectedRowInTable()));
+}
+
+void JuliaPkgManagement::upSelectedPkg() {
+    if (selected_pkg_name_in_table_ != "") {
+        args_.clear();
+        args_ << scan_pkg_path_ << "--up-one" << selected_pkg_name_in_table_;
+        proc_.start("julia", args_);
+
+        if (!proc_.waitForStarted()) {
+            auto error_scan_julia = new QErrorMessage(this);
+            error_scan_julia->setWindowTitle("QProcess Exec Error");
+            error_scan_julia->showMessage("Can't run: julia scan_pkg.jl --up-one pkg-name");
+        }
+        proc_.waitForFinished();
+        QString up_one_pkg_info = QString::fromLocal8Bit(proc_.readAllStandardOutput());
+
+        up_one_pkg_info = up_one_pkg_info.simplified();
+        // qDebug() << rm_pkg_info;
+        this->processPkgInfo(up_one_pkg_info);
+    } else {
+        QMessageBox box;
+        box.setText("Please firstly select the pkg in the table which you want uninstall!");
+        box.exec();
+
+        return;
+    }
 }
 
 void JuliaPkgManagement::rmSelectedPkg() {
