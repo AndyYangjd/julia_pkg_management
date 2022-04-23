@@ -67,7 +67,29 @@ void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
 }
 
 void JuliaPkgManagement::getNewPkgName(QString _new_pkg_name) {
-    qDebug() << _new_pkg_name;
+    // qDebug() << _new_pkg_name;
+    if (_new_pkg_name!=""){
+        args_.clear();
+        args_ << scan_pkg_path_ << "--add" << _new_pkg_name;
+        proc_.start("julia", args_);
+
+        if (!proc_.waitForStarted()) {
+            auto error_scan_julia = new QErrorMessage(this);
+            error_scan_julia->setWindowTitle("QProcess Exec Error");
+            error_scan_julia->showMessage("Can't run: julia scan_pkg.jl --add pkg-name");
+        }
+        proc_.waitForFinished();
+        QString add_pkg_info = QString::fromLocal8Bit(proc_.readAllStandardOutput());
+        add_pkg_info = add_pkg_info.simplified();
+        // qDebug() << "add_pkg_info: " << add_pkg_info;
+        this->processPkgInfo(add_pkg_info);
+    } else {
+        QMessageBox box;
+        box.setText("Please firstly enter the right pkg-name which you want to install!");
+        box.exec();
+
+        return;
+    }
 }
 
 void JuliaPkgManagement::installPkg() {
@@ -104,11 +126,12 @@ void JuliaPkgManagement::upSelectedPkg() {
         this->processPkgInfo(up_one_pkg_info);
     } else {
         QMessageBox box;
-        box.setText("Please firstly select the pkg in the table which you want uninstall!");
+        box.setText("Please firstly select the pkg in the table which you want to upgrade!");
         box.exec();
 
         return;
     }
+    selected_pkg_name_in_table_ = "";
 }
 
 void JuliaPkgManagement::rmSelectedPkg() {
@@ -135,6 +158,7 @@ void JuliaPkgManagement::rmSelectedPkg() {
 
         return;
     }
+    selected_pkg_name_in_table_ = "";
 }
 
 void JuliaPkgManagement::getSelectedRowInTable() {
