@@ -12,22 +12,25 @@ Usage:
 
 using Pkg;
 
+ENV["JULIA_PKG_SERVER"] = "https://mirrors.sjtug.sjtu.edu.cn/julia"
+
 cmd_arg = ARGS[1];
 
 if cmd_arg == "--cur"
-    Pkg.status(; io=stdout)
+    # Pkg.status(; io=stdout);
 elseif cmd_arg == "--up-one"
-    Pkg.update(ARGS[2])
-    Pkg.status(; io=stdout)
+    Pkg.update(ARGS[2]);
+    # Pkg.status(; io=stdout);
 elseif cmd_arg == "--up-all"
-    Pkg.update()
-    Pkg.status(; io=stdout)
+    Pkg.update();
+    # Pkg.status(; io=stdout);
 elseif cmd_arg == "--rm"
-    Pkg.rm(ARGS[2])
-    Pkg.status(; io=stdout)
+    Pkg.rm(ARGS[2]);
+    # Pkg.status(; io=stdout);
 elseif cmd_arg == "--add"
-    Pkg.add(ARGS[2])
-    Pkg.status(; io=stdout)
+    Pkg.add(ARGS[2]);
+    # Pkg.status(; io=stdout);
 else
     println("")
 end
+Pkg.status(; io=stdout);

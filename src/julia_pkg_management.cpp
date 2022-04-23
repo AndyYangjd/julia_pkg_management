@@ -119,11 +119,14 @@ void JuliaPkgManagement::upSelectedPkg() {
             error_scan_julia->showMessage("Can't run: julia scan_pkg.jl --up-one pkg-name");
         }
         proc_.waitForFinished();
+        /*
         QString up_one_pkg_info = QString::fromLocal8Bit(proc_.readAllStandardOutput());
 
         up_one_pkg_info = up_one_pkg_info.simplified();
-        // qDebug() << rm_pkg_info;
+        qDebug() << up_one_pkg_info;
         this->processPkgInfo(up_one_pkg_info);
+        */
+        this->scanCurrentPkg();
     } else {
         QMessageBox box;
         box.setText("Please firstly select the pkg in the table which you want to upgrade!");
