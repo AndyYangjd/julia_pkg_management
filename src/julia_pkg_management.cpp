@@ -52,15 +52,42 @@ void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
     connect(ui_->btn_load, SIGNAL(clicked()), this, SLOT(loadJuliaPath()));
     connect(ui_->lineEdit_executor, SIGNAL(returnPressed()), this, SLOT(editLineFinished()));
 
+    connect(ui_->btn_uninstall, SIGNAL(clicked(bool)), this, SLOT(rmSelectedPkg()));
     connect(ui_->btn_upgrade_all, SIGNAL(clicked()), this, SLOT(updatePkgAll()));
     connect(ui_->tableView_pkg, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getSelectedRowInTable()));
+}
+
+void JuliaPkgManagement::rmSelectedPkg() {
+    if (selected_pkg_name_in_table_ != "") {
+        args_.clear();
+        args_ << scan_pkg_path_ << "--rm" << selected_pkg_name_in_table_;
+        proc_.start("julia", args_);
+
+        if (!proc_.waitForStarted()) {
+            auto error_scan_julia = new QErrorMessage(this);
+            error_scan_julia->setWindowTitle("QProcess Exec Error");
+            error_scan_julia->showMessage("Can't run: julia scan_pkg.jl --rm pkg-name");
+        }
+        proc_.waitForFinished();
+        QString rm_pkg_info = QString::fromLocal8Bit(proc_.readAllStandardOutput());
+
+        rm_pkg_info = rm_pkg_info.simplified();
+        // qDebug() << rm_pkg_info;
+        this->processPkgInfo(rm_pkg_info);
+    } else {
+        QMessageBox box;
+        box.setText("Please firstly select the pkg in the table which you want uninstall!");
+        box.exec();
+
+        return;
+    }
 }
 
 void JuliaPkgManagement::getSelectedRowInTable() {
     auto selected_table_row_ = ui_->tableView_pkg->currentIndex().row();
     auto selected_pkg_index = pkg_manage_model_->index(selected_table_row_, 0);
     selected_pkg_name_in_table_ = pkg_manage_model_->data(selected_pkg_index).toString();
-    qDebug() << selected_pkg_name_in_table_;
+    // qDebug() << selected_pkg_name_in_table_;
 }
 
 void JuliaPkgManagement::updatePkgAll() {
@@ -100,6 +127,7 @@ void JuliaPkgManagement::updateTableModel(const QMap<QString, QString> &_map, VE
 }
 
 void JuliaPkgManagement::processPkgInfo(QString &_info) {
+    cur_pkg_name_version_.clear();
     auto str_len = _info.length();
     QStringList cur_pkg_info_list{};
     QString cur_pkg_info{};

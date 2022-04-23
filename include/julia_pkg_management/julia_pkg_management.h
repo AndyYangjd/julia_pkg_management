@@ -59,6 +59,7 @@ private slots:
     void installJulia();
 
     void getSelectedRowInTable();
+    void rmSelectedPkg();
     void updatePkgAll();
 };
 
