@@ -15,7 +15,7 @@ cmd_arg = ARGS[1];
 if cmd_arg =="--cur"
     Pkg.status(;io=stdout);
 elseif cmd_arg =="--up-all"
-    Pkg.update()
+    Pkg.update();
     Pkg.status(;io=stdout);
     else
         println("");

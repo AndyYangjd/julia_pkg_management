@@ -39,6 +39,8 @@ private:
     QMap<QString, QString> cur_pkg_name_version_{};
     QMap<QString, QString> latest_pkg_name_version_{};
 
+    QString selected_pkg_name_in_table_{};
+
     void initUI();
     void setConnectionsBetweenSignalsAndSlots();
 
@@ -55,6 +57,9 @@ private slots:
     void loadJuliaPath();
     void editLineFinished();
     void installJulia();
+
+    void getSelectedRowInTable();
+    void updatePkgAll();
 };
 
 

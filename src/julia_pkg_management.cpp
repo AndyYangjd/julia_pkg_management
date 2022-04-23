@@ -43,6 +43,7 @@ void JuliaPkgManagement::initUI() {
 
     ui_->tableView_pkg->setModel(pkg_manage_model_);
     ui_->tableView_pkg->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui_->tableView_pkg->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
@@ -50,6 +51,33 @@ void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
     connect(ui_->btn_auto_check, SIGNAL(clicked()), this, SLOT(checkJuliaEnvAuto()));
     connect(ui_->btn_load, SIGNAL(clicked()), this, SLOT(loadJuliaPath()));
     connect(ui_->lineEdit_executor, SIGNAL(returnPressed()), this, SLOT(editLineFinished()));
+
+    connect(ui_->btn_upgrade_all, SIGNAL(clicked()), this, SLOT(updatePkgAll()));
+    connect(ui_->tableView_pkg, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getSelectedRowInTable()));
+}
+
+void JuliaPkgManagement::getSelectedRowInTable() {
+    auto selected_table_row_ = ui_->tableView_pkg->currentIndex().row();
+    auto selected_pkg_index = pkg_manage_model_->index(selected_table_row_, 0);
+    selected_pkg_name_in_table_ = pkg_manage_model_->data(selected_pkg_index).toString();
+    qDebug() << selected_pkg_name_in_table_;
+}
+
+void JuliaPkgManagement::updatePkgAll() {
+    args_.clear();
+    args_ << scan_pkg_path_ << "--up-all";
+    proc_.start("julia", args_);
+
+    if (!proc_.waitForStarted()) {
+        auto error_scan_julia = new QErrorMessage(this);
+        error_scan_julia->setWindowTitle("QProcess Exec Error");
+        error_scan_julia->showMessage("Can't run: julia scan_pkg.jl --up-all");
+    }
+    proc_.waitForFinished();
+    QString updated_pkg_info = QString::fromLocal8Bit(proc_.readAllStandardOutput());
+
+    updated_pkg_info = updated_pkg_info.simplified();
+    this->processPkgInfo(updated_pkg_info);
 }
 
 void JuliaPkgManagement::updateTableModel(const QMap<QString, QString> &_map, VERSION_TYPE _type) {
