@@ -5,6 +5,7 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_julia_pkg_management.h" resolved
 
 #include "julia_pkg_management/julia_pkg_management.h"
+#include "julia_pkg_management/httpwindow.h"
 
 
 JuliaPkgManagement::JuliaPkgManagement(QWidget *parent) :
@@ -144,6 +145,12 @@ void JuliaPkgManagement::getScriptsPath() {
 
 void JuliaPkgManagement::installJulia() {
     QDesktopServices::openUrl(QUrl(QString("https://cn.julialang.org/downloads/")));
+
+    /*
+    HttpWindow* dig_download=new HttpWindow(this);
+    dig_download->show();
+    */
+
     /*
     args_.clear();
     args_ << "-o" << "C:\\Users\\%username%\\Downloads\\julia-1.7.2-win64.exe"

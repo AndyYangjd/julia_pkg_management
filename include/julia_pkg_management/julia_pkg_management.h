@@ -13,7 +13,6 @@
 #include <QMap>
 #include "../../form/ui_julia_pkg_management.h"
 
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class JuliaPkgManagement; }
 QT_END_NAMESPACE

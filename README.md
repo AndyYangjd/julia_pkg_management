@@ -22,3 +22,6 @@ the future version of this sw will have characters below:
 - v1.0：support the win10
 - v2.0：support the linux
 - v3.0：support selected language of view between english and chinese.
+
+## Notice
+* The httpwindow download widget is derived from Qt6 tutorial example.
