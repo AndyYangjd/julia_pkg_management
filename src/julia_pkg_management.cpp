@@ -19,6 +19,7 @@ JuliaPkgManagement::JuliaPkgManagement(QWidget *parent) :
 JuliaPkgManagement::~JuliaPkgManagement() {
     delete ui_;
     delete pkg_manage_model_;
+    delete widget_install_pkg_;
 }
 
 void JuliaPkgManagement::clearTableData() {
@@ -44,6 +45,9 @@ void JuliaPkgManagement::initUI() {
     ui_->tableView_pkg->setModel(pkg_manage_model_);
     ui_->tableView_pkg->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui_->tableView_pkg->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    widget_install_pkg_ = new InstallPkg();
+    widget_install_pkg_->setWindowModality(Qt::ApplicationModal);
 }
 
 void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
@@ -52,10 +56,33 @@ void JuliaPkgManagement::setConnectionsBetweenSignalsAndSlots() {
     connect(ui_->btn_load, SIGNAL(clicked()), this, SLOT(loadJuliaPath()));
     connect(ui_->lineEdit_executor, SIGNAL(returnPressed()), this, SLOT(editLineFinished()));
 
+    connect(ui_->btn_add, SIGNAL(clicked(bool)), this, SLOT(installPkg()));
     connect(ui_->btn_uninstall, SIGNAL(clicked(bool)), this, SLOT(rmSelectedPkg()));
     connect(ui_->btn_upgrade, SIGNAL(clicked(bool)), this, SLOT(upSelectedPkg()));
     connect(ui_->btn_upgrade_all, SIGNAL(clicked()), this, SLOT(updatePkgAll()));
     connect(ui_->tableView_pkg, SIGNAL(clicked(const QModelIndex &)), this, SLOT(getSelectedRowInTable()));
+
+    // self defined signals and slot
+    connect(this->widget_install_pkg_, SIGNAL(senderNewPkg(QString)), this, SLOT(getNewPkgName(QString)));
+}
+
+void JuliaPkgManagement::getNewPkgName(QString _new_pkg_name) {
+    qDebug() << _new_pkg_name;
+}
+
+void JuliaPkgManagement::installPkg() {
+
+    widget_install_pkg_->show();
+    /*
+    auto new_pkg_name = widget_install_pkg->getNewPkgName();
+    while (new_pkg_name==""){
+        new_pkg_name = widget_install_pkg->getNewPkgName();
+    }
+    if (new_pkg_name!="")
+    {
+        qDebug() << new_pkg_name;
+    }
+    */
 }
 
 void JuliaPkgManagement::upSelectedPkg() {
@@ -280,7 +307,6 @@ void JuliaPkgManagement::checkJuliaStr() {
         return;
     }
 }
-
 
 void JuliaPkgManagement::editLineFinished() {
     julia_path_ = ui_->lineEdit_executor->text();

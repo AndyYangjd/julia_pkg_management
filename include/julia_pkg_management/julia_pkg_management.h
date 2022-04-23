@@ -12,6 +12,7 @@
 #include <QStandardItemModel>
 #include <QMap>
 #include "../../form/ui_julia_pkg_management.h"
+#include "julia_pkg_management/install_pkg.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class JuliaPkgManagement; }
@@ -41,6 +42,8 @@ private:
 
     QString selected_pkg_name_in_table_{};
 
+    InstallPkg *widget_install_pkg_{};
+
     void initUI();
     void setConnectionsBetweenSignalsAndSlots();
 
@@ -59,6 +62,8 @@ private slots:
     void installJulia();
 
     void getSelectedRowInTable();
+    void installPkg();
+    void getNewPkgName(QString);
     void rmSelectedPkg();
     void upSelectedPkg();
     void updatePkgAll();

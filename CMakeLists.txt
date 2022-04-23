@@ -34,6 +34,9 @@ add_executable(julia_pkg_management
         include/julia_pkg_management/httpwindow.h
         form/ui_authenticationdialog.h
         form/authenticationdialog.ui
+        src/install_pkg.cpp
+        form/install_pkg.ui
+        include/julia_pkg_management/install_pkg.h
         )
 
 target_link_libraries(julia_pkg_management
