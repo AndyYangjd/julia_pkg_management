@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
+
 project(julia_pkg_management)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -17,14 +18,32 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        Network
         REQUIRED)
+find_package(Qt6 COMPONENTS Network)
 
 include_directories(include form)
-add_executable(julia_pkg_management src/main.cpp ${QRC_SOURCE_FILES} src/julia_pkg_management.cpp include/julia_pkg_management/julia_pkg_management.h form/julia_pkg_management.ui)
+link_directories("./lib")
+add_executable(julia_pkg_management
+        src/main.cpp
+        ${QRC_SOURCE_FILES}
+        src/julia_pkg_management.cpp
+        include/julia_pkg_management/julia_pkg_management.h
+        form/julia_pkg_management.ui
+        src/httpwindow.cpp
+        include/julia_pkg_management/httpwindow.h
+        form/ui_authenticationdialog.h
+        form/authenticationdialog.ui
+        src/install_pkg.cpp
+        form/install_pkg.ui
+        include/julia_pkg_management/install_pkg.h
+        )
+
 target_link_libraries(julia_pkg_management
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        Qt::Network
         )
 
 if (WIN32)
@@ -55,3 +74,6 @@ if (WIN32)
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
     endforeach (QT_LIB)
 endif ()
+
+install(TARGETS julia_pkg_management
+        RUNTIME DESTINATION bin)
